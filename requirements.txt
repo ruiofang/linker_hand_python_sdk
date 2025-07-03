@@ -1,3 +1,6 @@
+# 使用清华源安装依赖包
+# 安装命令: pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple/ -r requirements.txt
+
 dm_env==1.6
 pexpect==4.6.0
 pyquaternion==0.9.9

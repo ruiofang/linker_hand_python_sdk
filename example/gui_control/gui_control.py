@@ -138,7 +138,7 @@ class MainWindow(QMainWindow):
             self.setWindowTitle(f"Linker_Hand:左手- {self.hand_joint} Control - Qt5 with ROS")
         else:
             self.setWindowTitle(f"Linker_Hand:右手- {self.hand_joint} Control - Qt5 with ROS")
-        self.setGeometry(100, 100, 1280, 800)  # 增加窗口宽度和高度
+        self.setGeometry(100, 100, 1200, 800)  # 增加窗口宽度和高度
         # 创建分割线
         splitter = QSplitter(Qt.Orientation.Horizontal)
         splitter.setStyleSheet("""
@@ -160,7 +160,7 @@ class MainWindow(QMainWindow):
         self.right_view.add_button_handle.connect(self.add_button_handle)
         self.right_view.delete_action_signal.connect(self.delete_action_handle)
         self.right_view.edit_action_signal.connect(self.edit_action_handle)
-        splitter.setSizes([700, 500])  # 调整左右面板的初始宽度比例
+        splitter.setSizes([400, 800])  # 调整左右面板的初始宽度比例
         self.setCentralWidget(splitter)
     # 初始化波形图
     def _init_normal_force_plot(self,num_lines=5):
@@ -185,6 +185,11 @@ class MainWindow(QMainWindow):
         self.timer2.start(50)
     # 点击按钮后将动作数值写入yaml文件
     def handle_button_click(self,text):
+        # 检查机械手是否开启
+        if not self.left_view.is_open:
+            ColorMsg(msg="机械手已关闭，无法执行动作", color="red")
+            return
+            
         all_action = self.yaml.load_action_yaml(hand_type=self.hand_type,hand_joint=self.hand_joint)
         if all_action is None:
             print("警告：无法加载动作配置文件")
@@ -211,6 +216,11 @@ class MainWindow(QMainWindow):
 
     #点击添加按钮后将动作数值写入yaml文件
     def add_button_handle(self,text):
+        # 检查机械手是否开启
+        if not self.left_view.is_open:
+            ColorMsg(msg="机械手已关闭，无法添加动作", color="red")
+            return
+            
         self.add_button_position = self.left_view.get_slider_values()
         self.add_button_text = text
         self.yaml.write_to_yaml(action_name=text, action_pos=self.left_view.get_slider_values(),hand_joint=self.hand_joint,hand_type=self.hand_type)

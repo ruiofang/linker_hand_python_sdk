@@ -17,7 +17,7 @@ LEFT_HAND:
   - 255
   - 255
   - 83
-- ACTION_NAME: bs
+- ACTION_NAME: BS
   POSITION:
   - 53
   - 179
@@ -26,6 +26,33 @@ LEFT_HAND:
   - 3
   - 13
   - 58
+- ACTION_NAME: OK
+  POSITION:
+  - 97
+  - 179
+  - 133
+  - 229
+  - 236
+  - 238
+  - 83
+- ACTION_NAME: JD
+  POSITION:
+  - 211
+  - 231
+  - 255
+  - 0
+  - 0
+  - 0
+  - 83
+- ACTION_NAME: 'YES'
+  POSITION:
+  - 0
+  - 179
+  - 255
+  - 255
+  - 0
+  - 0
+  - 40
 RIGHT_HAND:
 - ACTION_NAME: 张开
   POSITION:

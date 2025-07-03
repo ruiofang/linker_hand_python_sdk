@@ -8,7 +8,7 @@ class LeftView(QWidget):
     slider_value_changed = pyqtSignal(dict)
     def __init__(self, joint_name=[],init_pos=[]):
         super().__init__()
-        self.is_open = True
+        self.is_open = False  # 默认关闭状态
         self.joint_name = joint_name
         self.init_pos = init_pos
         self.init_view()
@@ -30,7 +30,7 @@ class LeftView(QWidget):
             # 标签显示滑动条的值
             label = QLabel(f"{self.joint_name[i]}: 255", self)
             label.setFixedWidth(150)  # 增加标签宽度
-            label.setStyleSheet("font-size: 12px; font-weight: bold;")  # 增加字体样式
+            label.setStyleSheet("font-size: 18px; font-weight: bold;")  # 增加字体样式
             self.labels.append(label)
             slider_layout.addWidget(label)
 
@@ -48,19 +48,22 @@ class LeftView(QWidget):
         # 创建开启/关闭按钮
         self.toggle_button = QPushButton("开启", self)
         self.toggle_button.setCheckable(True)
+        self.toggle_button.setChecked(False)  # 默认未选中（关闭状态）
         self.toggle_button.setFixedSize(120, 40)  # 增加按钮尺寸
-        self.toggle_button.setStyleSheet("font-size: 14px; font-weight: bold;")  # 增加字体样式
+        self.toggle_button.setStyleSheet("font-size: 18px; font-weight: bold; background-color: #4ecdc4; color: white;")  # 增加字体样式
         self.toggle_button.clicked.connect(self.toggle_button_clicked)
         main_layout.addWidget(self.toggle_button)
 
     def update_label(self, index, value):
         self.labels[index].setText(f"{self.joint_name[index]}: {value}")
-        slider_values = {}
-        sliders = self.findChildren(QSlider)
-        for i, slider in enumerate(sliders):
-            slider_values[i] = slider.value()
-        # 发出信号，传递滑动条的当前值
-        self.slider_value_changed.emit(slider_values)
+        # 只有在机械手开启时才发出信号控制手指角度
+        if self.is_open:
+            slider_values = {}
+            sliders = self.findChildren(QSlider)
+            for i, slider in enumerate(sliders):
+                slider_values[i] = slider.value()
+            # 发出信号，传递滑动条的当前值
+            self.slider_value_changed.emit(slider_values)
         
         
     def set_slider_values(self, values):
@@ -78,9 +81,11 @@ class LeftView(QWidget):
     def toggle_button_clicked(self):
         if self.toggle_button.isChecked():
             self.toggle_button.setText("关闭")
-            self.is_open = False
-            # 在这里处理开启状态
+            self.toggle_button.setStyleSheet("font-size: 18px; font-weight: bold; background-color: #ff6b6b; color: white;")
+            self.is_open = True
+            # 机械手开启状态
         else:
             self.toggle_button.setText("开启")
-            self.is_open = True
-            # 在这里处理关闭状态
+            self.toggle_button.setStyleSheet("font-size: 18px; font-weight: bold; background-color: #4ecdc4; color: white;")
+            self.is_open = False
+            # 机械手关闭状态
