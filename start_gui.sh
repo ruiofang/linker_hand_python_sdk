@@ -34,7 +34,7 @@ cd "$GUI_DIR" || {
 echo "当前工作目录: $(pwd)"
 
 # 设置Qt插件路径
-export QT_QPA_PLATFORM_PLUGIN_PATH="$VENV_PATH/lib/python3.10/site-packages/PyQt5/Qt5/plugins/platforms"
+export QT_QPA_PLATFORM_PLUGIN_PATH="$VENV_PATH/lib/python3.10/site-packages/PyQt5/Qt/plugins/platforms"
 
 # 检查Qt插件路径是否存在
 if [ ! -d "$QT_QPA_PLATFORM_PLUGIN_PATH" ]; then
@@ -45,6 +45,9 @@ fi
 echo "Qt插件路径: $QT_QPA_PLATFORM_PLUGIN_PATH"
 
 # 激活虚拟环境并运行程序
+echo "正在激活虚拟环境..."
+source "$VENV_PATH/bin/activate"
+
 echo "正在启动GUI程序..."
 echo "=================================="
 
